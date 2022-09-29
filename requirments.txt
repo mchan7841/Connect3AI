@@ -1,0 +1,12 @@
+# Final project
+
+# Testing and code checking
+hypothesis~=5.41.2
+pytest~=6.1.2
+python-ta
+
+# Computations and graphs
+matplotlib~=3.3.3
+pandas~=1.1.5
+seaborn~=0.11.0
+scipy~=1.5.4
