@@ -1,5 +1,6 @@
 # Authors and Information
 Made by: Aabid Anas, Matthew Chan, Shayaan Khan, Markus Nimi
+
 Info: Final project for CSC111
 
 # Problem Description and Research Question
@@ -174,7 +175,7 @@ Lastly, even though there aren't any imported datasets, this program
 creates a gametree that acts as a decision tree for the opponent's
 player whenever one chooses to play against the optimized AI.
 
-# Changes between Final and Proposal {#changes-between-final-and-proposal .unnumbered}
+# Changes between Final and Proposal
 
 There were no major changes from the proposal from a functionality
 standpoint; however, our implementation of various functions was
@@ -187,7 +188,7 @@ player-versus-player game. In the end, we primarily used just the
 functions from the module that interacted with Pygame, with most other
 functionality being original.
 
-# Discussion {#discussion .unnumbered}
+# Discussion
 
 **How it answered our question**
 
@@ -266,7 +267,7 @@ methods are not recognized by Python-TA, and due to the way that we
 implemented our GUI using Tkinter, we were forced to use over the number
 of allowed instance attributes that Python-TA allows.
 
-# References {#references .unnumbered}
+# References
 
 Berkeley GamesCrafters Research Group. "Connect 4." GamesCrafters,\
 http://gamescrafters.berkeley.edu/games.php?game=connect4
