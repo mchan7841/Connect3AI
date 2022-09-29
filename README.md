@@ -175,19 +175,6 @@ Lastly, even though there aren't any imported datasets, this program
 creates a gametree that acts as a decision tree for the opponent's
 player whenever one chooses to play against the optimized AI.
 
-# Changes between Final and Proposal
-
-There were no major changes from the proposal from a functionality
-standpoint; however, our implementation of various functions was
-modified. Specifically, our original plan on using an existing Connect4
-module from Github changed after realizing that many functions in the
-module were unhelpful due to our different implementation of the
-Connect4 game and its methods. As well, the module file we were using
-was not ideal when considering an AI-versus-player game, rather than a
-player-versus-player game. In the end, we primarily used just the
-functions from the module that interacted with Pygame, with most other
-functionality being original.
-
 # Discussion
 
 **How it answered our question**
