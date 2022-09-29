@@ -1,13 +1,8 @@
----
-author:
-- Aabid Anas, Matthew Chan, Shayaan Khan, Markus Nimi
-date: Friday, March 16, 2021
-title: "CSC111 Project Proposal: AI for modified Connect Four"
----
+# Authors and Information
+Made by: Aabid Anas, Matthew Chan, Shayaan Khan, Markus Nimi
+Info: Final project for CSC111
 
-Project Proposal
-
-# Problem Description and Research Question {#problem-description-and-research-question .unnumbered}
+# Problem Description and Research Question
 
 **Question: How can we create a simple Connect 4 AI and evaluate how
 well it plays?**
@@ -44,7 +39,7 @@ that fit all of our needs. This will make analyses much easier. Plus, we
 liked the idea of creating an AI from scratch as it shows the
 computational ability to work up from nothing.
 
-# Datasets {#datasets .unnumbered}
+# Datasets 
 
 Our program does not make use of external datasets; instead, we
 synthesize our own data through thousands of games with the Exploring
@@ -67,7 +62,7 @@ case where the AI ties with its opponent, in which case the tree will
 have a value of 0.5. Due to this, the AI will prioritize a tie over a
 loss.
 
-# Computational overview {#computational-overview .unnumbered}
+# Computational overview
 
 **Game**
 
