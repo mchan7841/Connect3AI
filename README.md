@@ -137,7 +137,7 @@ console, both for the total cumulative over all the games as well as the
 last 20% of games. With both of these statistical outputs, we can see
 the trend of the AI over time both graphically and numerically.
 
-# How to run our program? {#how-to-run-our-program .unnumbered}
+# How to run our program?
 
 After downloading the libraries listed in the requirements.txt file, run
 the main.py program.
