@@ -1,0 +1,290 @@
+---
+author:
+- Aabid Anas, Matthew Chan, Shayaan Khan, Markus Nimi
+date: Friday, March 16, 2021
+title: "CSC111 Project Proposal: AI for modified Connect Four"
+---
+
+Project Proposal
+
+# Problem Description and Research Question {#problem-description-and-research-question .unnumbered}
+
+**Question: How can we create a simple Connect 4 AI and evaluate how
+well it plays?**
+
+Connect Four, a board game invented in 1974, is a two-player game in
+which players take turns placing discs into a 6 by 7 matrix with the
+goal of connecting four of their discs vertically, horizontally, or
+diagonally before their opponent. The 7 columns are constrained by
+gravity, in that both players' discs fall to the bottom of the column.
+This poses a limitation for players, allowing them a maximum of 7
+possible moves per turn; if a column fills up, no more discs may be put
+into the column (Berkeley GamesCrafters Research Group, 2001; F.G.
+Bradley's, 1990; Weisstein, 2003).
+
+In order to make this project more computationally feasible, we decided
+to shrink the board into a 4 by 5 matrix in which 3 consecutive discs of
+the same colour result in a winner. In the case where all 20 slots in
+the matrix are filled, a tie ensues.
+
+Our goal in this project is to create a program that can gradually learn
+the game through trial and error. We can track different statistics
+regarding the choices of the AI to observe winning strategies and log
+the wins and losses to track the AI's progress over time for a set
+amount of games. We then hope to be able to expand this application by
+allowing a human player to interact with the AI player. This way, we can
+easily test how practical the AI is against a player who can develop
+complex strategies rather than a simple random player.
+
+We chose to pursue a project involving a game AI for a few reasons. By
+allowing the AI to mature over time, we forego the need for a large
+complex data set. As well, creating such an AI allows us to create the
+data set from scratch, allowing us to create custom abstract data types
+that fit all of our needs. This will make analyses much easier. Plus, we
+liked the idea of creating an AI from scratch as it shows the
+computational ability to work up from nothing.
+
+# Datasets {#datasets .unnumbered}
+
+Our program does not make use of external datasets; instead, we
+synthesize our own data through thousands of games with the Exploring
+Player AI. At the end of each of these games, we track the move sequence
+and append this sequence to a master gametree with all routes tried so
+far. After thousands of games, this tree becomes our "data," where each
+branch of the tree corresponds to different game states ending in an AI
+win, AI loss, or draw. The AI uses this tree to determine what its next
+move should be to optimize its chances of success.
+
+The specific tree that our AI uses is greatly based on the gametree used
+in Assignment 2 for ExploringPlayer. Our implementation differs by
+making the win probability (a value from 0 to 1, with 0 being a loss and
+1 being a win) relative to this AI (rather than a variable for yellow
+probability or red probability), and we introduce another instance
+attribute to determine whether this tree is for a red player or a yellow
+player (as calculations of average and maximum tree win probabilities
+depend on this fact). In addition, unlike Assignment 2, we created a
+case where the AI ties with its opponent, in which case the tree will
+have a value of 0.5. Due to this, the AI will prioritize a tie over a
+loss.
+
+# Computational overview {#computational-overview .unnumbered}
+
+**Game**
+
+For our game, we used a similar philosophy to Assignment 2, whereby we
+created a class for the game that contains the board and the methods for
+altering the board, getting all possible valid moves, retrieving the
+game states and finding the winner. The board is essentially contained
+in a 3D numpy array, full of zeroes to indicate an empty board. It will
+then change to 1 and 2 for yellow and red, respectively. The game board
+is of size 4 by 5 and checks the win conditions for each 3 consecutive
+pieces vertically, horizontally or diagonally.
+
+We have also set up an abstract player class that is the parent of our
+two other player classes: RandomPlayer and ExploringPlayer. RandomPlayer
+simply picks a random move from all the valid moves possible using the
+current gamestate, whereas ExploringPlayer traverses the most optimal
+subtree, depending on the highest probability of winning by traversing
+through that subtree.
+
+**AI**
+
+For this project, we will be using AIs with similar heuristics as those
+we used in Assignment 2. We will be utilizing tree structures to create
+our Player AIs for the user to play against. At the beginning of the
+program, once the player has selected the color they want to play as, a
+game tree for the other color (i.e. the color that the computer will
+play as) is generated by having the RandomPlayer and ExploringPlayer AI
+play against each other to determine optimal subtrees for the computer
+player. Each game state and valid move is essentially represented by the
+game tree and its subtrees, with each tree object also having additional
+attributes that track the winning probability of each subtree and to
+keep track of whose move it is given the state of the game tree and
+previous moves. The way the main game tree is generated is that it runs
+thousands of games, with the ExploringPlayer versus the RandomPlayer,
+with the ExploringPlayer playing the other color that the human player
+selected (this will generate the most optimal graph for the computer to
+play with). Once the tree is generated, the player then would have a
+choice to be able to play against either the ExploringPlayer, which
+would always traverse the most optimal subtree, or the RandomPlayer,
+which would traverse the tree by choosing randomly between all the
+possible valid moves given the current game state.
+
+**Interface and Interection**
+
+Firstly, once the program is run, a GUI is generated and presented to
+the user with the tkinter module, which is generally the best package to
+use to give the user an interactive interface. The user then has 2
+parameters to select: the color they are playing as and the type of AI
+they want to play against. These options are presented as radio buttons
+and the user can select either yellow or red for colors, and either
+random or experienced AI for the AI selections. Once the player has
+chosen their desired game experience, a new pygame popup appears. One
+thing to note is that there is a small delay when the play button is
+pressed when the user has selected the Optimized AI because the gametree
+is being generated (this delay does not occur if the user has selected
+the Randomized AI). The board is displayed and you are able to hover
+over the column you want to put the piece in and click to drop it in
+that column (yellow will always move first, so if red is chosen, the
+yellow piece placed by the computer is already there). The game
+continues until either one of the players get 3 consecutive pieces of
+the same color vertically, horizontally or diagonally, or the entire
+board is filled up without any winning conditions.
+
+**Statistics and Graphs**
+
+Like the results for Assignment 2, the results for each game in the
+running algorithm is plotted with the plotly module to help show us how
+exactly the strength of the AI increases over each successive game. The
+statistics for the win percentages for each color are displayed in the
+console, both for the total cumulative over all the games as well as the
+last 20% of games. With both of these statistical outputs, we can see
+the trend of the AI over time both graphically and numerically.
+
+# How to run our program? {#how-to-run-our-program .unnumbered}
+
+After downloading the libraries listed in the requirements.txt file, run
+the main.py program.
+
+Once the program has run, a menu page will be shown from which one can
+choose to play as the Red player or the Yellow player (with Yellow
+always being the color that goes first). One can also choose the
+experience level of your opponent (i.e., the computer): Randomized or
+Experienced.
+
+If your opponent is an inexperienced player, the moves it will make will
+be random. However, choosing an experienced opponent would lead to a
+more challenging game. This is because before the game is played, the
+opponent is trained with many game simulations, and so it is able to
+make moves that will lead it to victory.
+
+Moreover, choosing to play against an optimized AI will cause a page
+with two plots to pop up. The plot on the top states the number of
+victories by each player when the game is simulated 20,000 times, while
+the plot on the bottom shows the win percentage of the opponent's player
+over time (as the 20,000 simulations are run). The bottom plot also
+shows a line of best fit for the percentage of the opponent's player's
+victories, and one can see that this percentage increases after 80% of
+the games have been simulated because in the last 20% of games, the AI
+is playing on its own based on all the previous simulated games it has
+experienced. One will realize that when the AI is playing as the yellow
+player, its winning percentage is significantly larger than if it were
+playing as the yellow player.
+
+Note that when playing against an experienced AI, there will be a delay
+of up to 15 seconds while the AI's gametree is being generated through
+thousands of games.
+
+Lastly, even though there aren't any imported datasets, this program
+creates a gametree that acts as a decision tree for the opponent's
+player whenever one chooses to play against the optimized AI.
+
+# Changes between Final and Proposal {#changes-between-final-and-proposal .unnumbered}
+
+There were no major changes from the proposal from a functionality
+standpoint; however, our implementation of various functions was
+modified. Specifically, our original plan on using an existing Connect4
+module from Github changed after realizing that many functions in the
+module were unhelpful due to our different implementation of the
+Connect4 game and its methods. As well, the module file we were using
+was not ideal when considering an AI-versus-player game, rather than a
+player-versus-player game. In the end, we primarily used just the
+functions from the module that interacted with Pygame, with most other
+functionality being original.
+
+# Discussion {#discussion .unnumbered}
+
+**How it answered our question**
+
+We answered our original question by successfully creating a basic AI
+that can consistently win over 35% more games compared to if the bot
+were to simply choose random moves. The user, as a human, can also
+physically play against each of the AIs to see and feel the difference
+between how each of the different opponents play. Therefore, we are able
+to evaluate it both quantitatively and qualitatively.
+
+**Results of modifying Connect4**
+
+We discovered that with our current modified configuration of Connect4,
+the yellow player (who goes first, much like how white moves first in
+chess) will always have an advantage. From our results, given two random
+players, this distribution seems to be 40% red wins to 60% yellow wins.
+Given a set-up where our AI plays a completely random player, after
+training our AI using 20000 games, this figure becomes 75% and 95% for
+red and yellow respectively. In other words, we can conclude that
+connecting 3-in-a-row is much easier and requires less strategy compared
+to unmodified Connect4, thus providing the first player with a much
+greater advantage. As well, because of this ease, ties are very unlikely
+(from our testing, only around 0.05% of games result in ties). This is
+probably because starting in the middle with a much smaller game board
+allows the computer to control more territory and have more options
+where to go to win, and thus controlling the center area in the first
+turn becomes important.
+
+**Computational Limits**
+
+The method we choose bases the decisions it makes based off of past
+games played against a random player. The problem with this is that it
+is not computationally feasible to run the algorithm with the number of
+games set equal to the number of possible outcomes for Connect 3. While
+we don't know the exact number of outcomes for Connect 3, we know there
+are over 4 trillion outcomes for Connect 4 (Gamesver Team, 2021). While
+our Connect 3 board has a much smaller board (4 x 5 vs. 6 x 7), the
+number of possible outcomes for Connect 3 is still much greater than the
+number of games we can simulate to train our AI. In this project we set
+the default to 20,000 games which is only a small percentage of the
+possible games. This leads to situations where the AI has not
+\"learned\" what to do and ends up acting randomly. This leads to
+situations where a player playing against the AI may get an easy win.
+Also, since we generate a new AI each time we run the program, the
+results can vary from each AI. From limited human testing, sometimes the
+AI can win easily against a human player if it plays first (due to the
+nature of the game it is possible for a player in connect 3 to win every
+time if they go first and make a certain set of moves). Sometimes the AI
+finds this outcome and easily beats the player but other times the AI
+does not perform very well against a human. If this was implemented for
+a final iteration of a game, we would do more extensive testing and
+select the best AI to use instead of generating a new AI each time the
+game is run.
+
+**Method Limits**
+
+The method we used is limited because it trains itself against random
+players. This means that the algorithm is designed to beat a random
+player and does so well, but it leads to some struggles against a human
+player who is more likely to make intelligent moves depending on the
+situation. There is a certain strategy that a human uses when playing
+games like Connect 3 which can rarely be emulated by a computer choosing
+random moves. To train our algorithm to beat human players it would have
+been better to have humans play games against the AI but this it is not
+feasible to get humans to play 10000+ games of Connect 3.
+
+**Python_TA**
+
+As we relied on several functions from a Github repository, much of the
+code that we used did not adhere to Python-TA standards, thus creating
+several nesting and and branch errors. This causes Python-TA to list
+several warnings for main.py and connect3.py (for example,
+Connect3Game.\_is_winning_move, which is essentially copy-pasted from
+Github, has a too-many-branch error). As well, in main.py, Pygame's
+methods are not recognized by Python-TA, and due to the way that we
+implemented our GUI using Tkinter, we were forced to use over the number
+of allowed instance attributes that Python-TA allows.
+
+# References {#references .unnumbered}
+
+Berkeley GamesCrafters Research Group. "Connect 4." GamesCrafters,\
+http://gamescrafters.berkeley.edu/games.php?game=connect4
+
+"Connect Four." F.G. Bradley's, 1990,
+https://www.fgbradleys.com/rules/Connect%20Four.pdf.
+
+Weisstein, Eric W. "Connect-Four." From Wolfram MathWorld,
+mathworld.wolfram.com/Connect-Four.html.
+
+"17 Fun and Intriguing Facts About Connect 4!" Gamesver Team, 2021,
+www.gamesver.com/17-fun-and-intriguing-facts-about-connect-4/.
+
+``` {breaklines="true" breakanywhere="true"}
+ 
+```
